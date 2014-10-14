@@ -7,12 +7,11 @@ these 3 strings write a function that detects whether str3 is a valid shuffle of
 */
 
 //Tylers solution
-var strChecker = function(str1, str2, str3){
+var withIndexOf = function(str1, str2, str3){
   var first = '';
   var second = '';
   
   for(var i = 0; i < str3.length; i++){
-    //n^2 time I believe. Gross.
     if(str1.indexOf(str3[i]) !== -1){
       first += str3[i];
     } else {
@@ -26,7 +25,33 @@ var strChecker = function(str1, str2, str3){
     return false;
   }
 }
+withIndexOf('abcdefghijklmno', 'pqrstuvwxyz', 'abpqcdrefgstuhijklvwmxnyzo')
 
-strChecker('abc', 'def', 'dabecf')
 
-//end tylers solution
+//Tyler Other solution creating a map object.
+var withObj = function(str1, str2, str3){
+  var first = '';
+  var second = '';
+
+  var str1Map = {};
+  for(var i = 0; i < str1.length; i++){
+    str1Map[str1[i]] = true;
+  }
+  
+  for(var i = 0; i < str3.length; i++){
+    if(str3[i] in str1Map){
+      first += str3[i];
+    } else {
+      second += str3[i];
+    }
+  }
+  
+  if(first === str1 && second === str2){
+    return true;
+  } else {
+    return false;
+  }
+};
+withObj('abcdefghijklmno', 'pqrstuvwxyz', 'abpqcdrefgstuhijklvwmxnyzo');
+
+//According to JS perf, withObj is 80% slower than withIndexOf (http://jsperf.com/objindexof)
